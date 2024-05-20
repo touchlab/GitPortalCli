@@ -20,7 +20,4 @@ plugins {
 
 rootProject.name = "GitPortal"
 
-include(":core")
-//include(":bidir")
-include(":cli")
-include(":cli-files")
+include(":cli-build")
