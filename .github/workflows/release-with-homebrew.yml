@@ -44,7 +44,7 @@ jobs:
       - name: Apply SSH Key
         uses: webfactory/ssh-agent@v0.5.4
         with:
-          ssh-private-key: ${{ secrets.HOMEBREW_TAP_SSH_KEY }}
+          ssh-private-key: ${{ secrets.GITPORTAL_SSH_KEY }}
 
       - name: 'Checkout homebrew tap'
         uses: actions/checkout@v4
