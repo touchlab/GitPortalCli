@@ -8,7 +8,7 @@ val GROUP: String by project
 val VERSION_NAME: String by project
 
 group = GROUP
-version = VERSION_NAME//.${(System.currentTimeMillis()/1000)}"
+version = VERSION_NAME
 
 kotlin {
     listOf(macosX64(), macosArm64()).forEach {
