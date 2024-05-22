@@ -14,7 +14,7 @@ kotlin {
     listOf(macosX64(), macosArm64()).forEach {
         it.binaries {
             executable {
-                entryPoint = "co.touchlab.gitportal.main"
+                entryPoint = "mainCli"
 
                 runTask?.run {
                     val args = providers.gradleProperty("runArgs")

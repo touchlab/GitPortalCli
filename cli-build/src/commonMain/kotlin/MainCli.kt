@@ -1,4 +1,3 @@
-import kotlinx.cli.Subcommand
 
 fun mainCli(args: Array<String>) {
     MainCli().entry(args, { arg: Any -> DeployKeySetup(arg) })
