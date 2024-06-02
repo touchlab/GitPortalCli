@@ -30,21 +30,27 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+//                runtimeOnly("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.2")
+
                 implementation(libs.kotlinx.cli)
                 implementation(libs.kermit)
                 implementation(libs.okio)
                 implementation(libs.uuid)
+                implementation(libs.datetime)
             }
         }
 
         val macosX64Main by getting {
             dependencies {
+                implementation(files("../engine-build/macosX64/main/klib/engine.klib"))
                 implementation(files("macosX64/main/klib/cli.klib"))
             }
         }
 
         val macosArm64Main by getting {
             dependencies {
+                implementation(files("../engine-build/macosArm64/main/klib/engine.klib"))
                 implementation(files("macosArm64/main/klib/cli.klib"))
             }
         }

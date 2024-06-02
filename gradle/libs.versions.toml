@@ -6,12 +6,14 @@ kotlinx-cli = "0.3.6"
 kermit = "2.0.3"
 okio = "3.9.0"
 uuid = "0.8.4"
+datetime = "0.6.0"
 
 [libraries]
 kotlinx-cli = { module = "org.jetbrains.kotlinx:kotlinx-cli", version.ref = "kotlinx-cli" }
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 uuid = { module = "com.benasher44:uuid", version.ref = "uuid" }
+datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

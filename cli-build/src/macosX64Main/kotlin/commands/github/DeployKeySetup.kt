@@ -1,7 +1,7 @@
 
-import co.touchlab.gitportal.operations.GitPortal
-import co.touchlab.gitportal.operations.GitPortalError
-import co.touchlab.gitportal.operations.gitPortalError
+import co.touchlab.gitportal.GitPortal
+import co.touchlab.gitportal.process.ErrorManager.GitPortalError
+import co.touchlab.gitportal.gitPortalError
 import co.touchlab.gitportal.process.procException
 import co.touchlab.gitportal.process.readText
 import kotlinx.cli.ArgType
@@ -9,8 +9,8 @@ import kotlinx.cli.default
 import kotlinx.cli.multiple
 import kotlinx.cli.required
 import okio.FileSystem
-import okio.SYSTEM
 import kotlin.random.Random
+import co.touchlab.gitportal.utils.consoleOut
 
 actual class DeployKeySetup actual constructor(gitPortalArg: Any) : co.touchlab.gitportal.commands.BaseLoggingCommand("deploykey", "Create Deploy Key and secrets") {
     private val gitPortal: GitPortal = gitPortalArg as GitPortal
@@ -29,15 +29,15 @@ actual class DeployKeySetup actual constructor(gitPortalArg: Any) : co.touchlab.
 
         val deployKeyName = "dp-${Random.nextLong()}" // It would be *possible* to get the same random val, but unlikely
 
-        val gitTmp = gitPortal.processUtils.makeFile(gitPortal.gitOps.gitTempPath)
+        val gitTmp = gitPortal.makeFile(gitPortal.gitTempPath)
         FileSystem.SYSTEM.createDirectories(gitTmp)
 
         val deployKeyPrivateFilePath =
-            gitPortal.processUtils.makeFile("${gitPortal.gitOps.gitTempPath}/${deployKeyName}")
+            gitPortal.makeFile("${gitPortal.gitTempPath}/${deployKeyName}")
         val deployKeyPublicFilePath =
-            gitPortal.processUtils.makeFile("${gitPortal.gitOps.gitTempPath}/${deployKeyName}.pub")
+            gitPortal.makeFile("${gitPortal.gitTempPath}/${deployKeyName}.pub")
 
-        gitPortal.processUtils.procRunOut(
+        gitPortal.procRunOut(
             "ssh-keygen",
             "-t",
             "ed25519",
@@ -63,7 +63,7 @@ actual class DeployKeySetup actual constructor(gitPortalArg: Any) : co.touchlab.
                 "-t",
                 keyname
             )
-            val secretVal = gitPortal.processUtils.makeFile(deployKeyPrivateFilePath).readText()
+            val secretVal = gitPortal.makeFile(deployKeyPrivateFilePath).readText()
             appRepos.forEach { repo ->
                 ghCall("gh", "secret", "set", "GITPORTAL_SSH_KEY", "--body", secretVal, "-R", repo)
             }
@@ -78,7 +78,7 @@ actual class DeployKeySetup actual constructor(gitPortalArg: Any) : co.touchlab.
             )
         }
 
-        gitPortal.consoleOut("Deploy keys and secrets created successfully")
+        consoleOut("Deploy keys and secrets created successfully")
     }
 
     private fun checkRepoAccess() {
@@ -91,8 +91,8 @@ actual class DeployKeySetup actual constructor(gitPortalArg: Any) : co.touchlab.
     }
 
     private fun ghCall(vararg args: String): Result<String> {
-        val result = gitPortal.processUtils.runNoFail {
-            gitPortal.processUtils.procRunOut(
+        val result = gitPortal.runNoFail {
+            gitPortal.procRunOut(
                 *args
             )
         }
