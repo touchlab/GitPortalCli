@@ -22,9 +22,7 @@ actual class DeployKeySetup actual constructor(gitPortalArg: Any) : co.touchlab.
         description = "Deploy Key Label. Default 'GitPortal Key'"
     ).default("GitPortal Key")
 
-    override fun execute() {
-        super.execute()
-
+    override fun executeWithErrorLogging() {
         checkRepoAccess()
 
         val deployKeyName = "dp-${Random.nextLong()}" // It would be *possible* to get the same random val, but unlikely
