@@ -27,6 +27,7 @@ actual class DeployKeySetup actual constructor(gitPortalArg: Any) : co.touchlab.
 
         val deployKeyName = "dp-${Random.nextLong()}" // It would be *possible* to get the same random val, but unlikely
 
+        gitPortal.shRunOut("\$HOME/.git")
         val gitTmp = gitPortal.makeFile(gitPortal.gitTempPath)
         FileSystem.SYSTEM.createDirectories(gitTmp)
 
