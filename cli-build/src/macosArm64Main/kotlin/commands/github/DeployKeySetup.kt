@@ -90,19 +90,19 @@ actual class DeployKeySetup actual constructor(gitPortalArg: Any) : co.touchlab.
         }
 
         if (result.isFailure) {
-            if (result.procException?.output?.contains("gh auth login") == true) {
+            if (result.procException?.combinedOutput?.contains("gh auth login") == true) {
                 gitPortalError(
                     GitPortalError.GitHubNeedsAuth,
                     "GitHub Cli is not authorized. Run 'gh auth login' and follow the instructions"
                 )
             }
-            if (result.procException?.output?.contains("Could not resolve to a Repository with the name") == true) {
+            if (result.procException?.combinedOutput?.contains("Could not resolve to a Repository with the name") == true) {
                 gitPortalError(
                     GitPortalError.GitHubRepoNotFound,
                     "GitHub Cli is not authorized. Run 'gh auth login' and follow the instructions"
                 )
             }
-            if (result.procException?.output?.contains("HTTP 404: Not Found") == true) {
+            if (result.procException?.combinedOutput?.contains("HTTP 404: Not Found") == true) {
                 gitPortalError(
                     GitPortalError.GitHubRepoInsufficientAccess,
                     "GitHub Cli reported 'Not Found'. You may not have sufficient access to this repo."
