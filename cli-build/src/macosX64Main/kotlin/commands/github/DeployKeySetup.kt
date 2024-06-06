@@ -26,15 +26,8 @@ actual class DeployKeySetup actual constructor(gitPortalArg: Any) : co.touchlab.
         checkRepoAccess()
 
         val deployKeyName = "dp-${Random.nextLong()}" // It would be *possible* to get the same random val, but unlikely
-
-        gitPortal.shRunOut("\$HOME/.git")
-        val gitTmp = gitPortal.makeFile(gitPortal.gitTempPath)
-        FileSystem.SYSTEM.createDirectories(gitTmp)
-
-        val deployKeyPrivateFilePath =
-            gitPortal.makeFile("${gitPortal.gitTempPath}/${deployKeyName}")
-        val deployKeyPublicFilePath =
-            gitPortal.makeFile("${gitPortal.gitTempPath}/${deployKeyName}.pub")
+        val deployKeyPrivateFilePath = gitPortal.localConfigManager.localTempFile(deployKeyName)
+        val deployKeyPublicFilePath =gitPortal.localConfigManager.localTempFile("${deployKeyName}.pub")
 
         gitPortal.procRunOut(
             "ssh-keygen",
