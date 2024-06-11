@@ -65,4 +65,4 @@ jobs:
           git checkout -b 'release-${{ steps.version-name.outputs.propVal }}'
           git add .
           git commit -m "Add version ${{ steps.version-name.outputs.propVal }}"
-          git push
+          git push --set-upstream origin 'release-${{ steps.version-name.outputs.propVal }}'
