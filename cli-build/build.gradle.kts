@@ -43,6 +43,7 @@ kotlin {
 
         val macosX64Main by getting {
             dependencies {
+                implementation(files("../proc-build/macosX64/main/klib/proc.klib"))
                 implementation(files("../engine-build/macosX64/main/klib/engine.klib"))
                 implementation(files("macosX64/main/klib/cli.klib"))
             }
@@ -50,6 +51,7 @@ kotlin {
 
         val macosArm64Main by getting {
             dependencies {
+                implementation(files("../proc-build/macosArm64/main/klib/proc.klib"))
                 implementation(files("../engine-build/macosArm64/main/klib/engine.klib"))
                 implementation(files("macosArm64/main/klib/cli.klib"))
             }
