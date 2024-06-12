@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+import org.apache.tools.ant.filters.ReplaceTokens
+
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
 }
@@ -65,3 +68,16 @@ kotlin {
     }
 }
 
+tasks.register<Exec>("uploadDsymsArm") {
+    commandLine("./uploaddsyms-arm.sh")
+    group = "custom"
+    description = "Uploads Sentry dSYMsn for arm/m1"
+}
+
+tasks.register<Exec>("uploadDsymsIntel") {
+    commandLine("./uploaddsyms-intel.sh")
+    group = "custom"
+    description = "Uploads Sentry dSYMsn for intel"
+}
+tasks.named("linkReleaseExecutableMacosX64") { finalizedBy("uploadDsymsIntel") }
+tasks.named("linkReleaseExecutableMacosArm64") { finalizedBy("uploadDsymsArm") }
