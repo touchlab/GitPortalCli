@@ -113,5 +113,5 @@ tasks.register<Exec>("uploadDsymsIntel") {
     group = "custom"
     description = "Uploads Sentry dSYMsn for intel"
 }
-tasks.named("linkReleaseExecutableMacosX64") { finalizedBy("uploadDsymsIntel") }
-tasks.named("linkReleaseExecutableMacosArm64") { finalizedBy("uploadDsymsArm") }
+//tasks.named("linkReleaseExecutableMacosX64") { finalizedBy("uploadDsymsIntel") }
+//tasks.named("linkReleaseExecutableMacosArm64") { finalizedBy("uploadDsymsArm") }
