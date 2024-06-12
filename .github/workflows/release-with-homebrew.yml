@@ -58,8 +58,6 @@ jobs:
           cd homebrew
           sed -i'' -e 's/tag:.*$/tag: "${{ steps.version-name.outputs.propVal }}",/g' Formula/gitportal.rb
           sed -i'' -e 's/revision:.*$/revision: "${{ steps.releasesha.outputs.releasesha }}"/g' Formula/gitportal.rb
-          sed -i'' -e 's/tag:.*$/tag: "${{ steps.version-name.outputs.propVal }}",/g' Formula/gitportal-rc.rb
-          sed -i'' -e 's/revision:.*$/revision: "${{ steps.releasesha.outputs.releasesha }}"/g' Formula/gitportal-rc.rb
           git config --global user.email "kgalligan@gmail.com"
           git config --global user.name "Kevin Galligan"
           git checkout -b 'release-${{ steps.version-name.outputs.propVal }}'
