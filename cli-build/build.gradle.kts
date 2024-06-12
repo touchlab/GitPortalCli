@@ -102,16 +102,16 @@ kotlin {
     }
 }
 
-tasks.register<Exec>("uploadDsymsArm") {
-    commandLine("./uploaddsyms-arm.sh")
+tasks.register<Exec>("zipDsymsArm") {
+    commandLine("./zip-dsyms-arm.sh")
     group = "custom"
     description = "Uploads Sentry dSYMsn for arm/m1"
 }
 
-tasks.register<Exec>("uploadDsymsIntel") {
-    commandLine("./uploaddsyms-intel.sh")
+tasks.register<Exec>("zipDsymsIntel") {
+    commandLine("./zip-dsyms-intel.sh")
     group = "custom"
     description = "Uploads Sentry dSYMsn for intel"
 }
-//tasks.named("linkReleaseExecutableMacosX64") { finalizedBy("uploadDsymsIntel") }
-//tasks.named("linkReleaseExecutableMacosArm64") { finalizedBy("uploadDsymsArm") }
+tasks.named("linkReleaseExecutableMacosArm64") { finalizedBy("zipDsymsArm") }
+tasks.named("linkReleaseExecutableMacosX64") { finalizedBy("zipDsymsIntel") }

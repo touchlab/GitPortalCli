@@ -1,0 +1,1 @@
+zip -r /tmp/gitportal-arm-dsyms.zip build/bin/macosArm64/releaseExecutable/cli-build.kexe.dSYM
