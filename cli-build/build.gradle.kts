@@ -1,6 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-import org.apache.tools.ant.filters.ReplaceTokens
 import org.jetbrains.kotlin.gradle.plugin.mpp.Executable
 import java.io.ByteArrayOutputStream
 
@@ -16,7 +15,7 @@ group = GROUP
 version = VERSION_NAME
 
 @Throws(RuntimeException::class)
-fun Project.xcodeInstallPath():String = ByteArrayOutputStream().use { outputStream ->
+fun Project.xcodeInstallPath(): String = ByteArrayOutputStream().use { outputStream ->
     exec {
         standardOutput = outputStream
         workingDir = projectDir
@@ -58,9 +57,11 @@ kotlin {
         .forEach { pair ->
             if (!pair.second.isEmpty()) {
 
-                pair.first.kotlinOptions.freeCompilerArgs += listOf("-linker-options", "-framework Sentry " +
-                        "-F cli-build/native/Sentry.xcframework/macos-arm64_x86_64 -L/usr/lib/swift/ " +
-                        "-L${xcodeInstallPath()}/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx")
+                pair.first.kotlinOptions.freeCompilerArgs += listOf(
+                    "-linker-options", "-framework Sentry " +
+                            "-F cli-build/native/Sentry.xcframework/macos-arm64_x86_64 -L/usr/lib/swift/ " +
+                            "-L${xcodeInstallPath()}/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx"
+                )
             }
         }
 
@@ -102,16 +103,22 @@ kotlin {
     }
 }
 
-tasks.register<Exec>("mvDsymsArm") {
-    commandLine("./mv-dsyms-arm.sh")
-    group = "custom"
-    description = "Uploads Sentry dSYMsn for arm/m1"
-}
+// Homebrew build
+val brewbuild: String? by project
 
-tasks.register<Exec>("mvDsymsIntel") {
-    commandLine("./mv-dsyms-intel.sh")
-    group = "custom"
-    description = "Uploads Sentry dSYMsn for intel"
+if (brewbuild == "true") {
+    tasks.register<Exec>("mvDsymsArm") {
+        commandLine("./mv-dsyms-arm.sh")
+        group = "custom"
+        description = "Uploads Sentry dSYMsn for arm/m1"
+    }
+
+    tasks.register<Exec>("mvDsymsIntel") {
+        commandLine("./mv-dsyms-intel.sh")
+        group = "custom"
+        description = "Uploads Sentry dSYMsn for intel"
+    }
+
+    tasks.named("linkReleaseExecutableMacosArm64") { finalizedBy("mvDsymsArm") }
+    tasks.named("linkReleaseExecutableMacosX64") { finalizedBy("mvDsymsIntel") }
 }
-tasks.named("linkReleaseExecutableMacosArm64") { finalizedBy("mvDsymsArm") }
-tasks.named("linkReleaseExecutableMacosX64") { finalizedBy("mvDsymsIntel") }

@@ -3,6 +3,7 @@ import io.sentry.kotlin.multiplatform.Sentry
 import io.sentry.kotlin.multiplatform.SentryLevel
 import io.sentry.kotlin.multiplatform.protocol.Breadcrumb
 import okio.Path.Companion.toPath
+import platform.posix.sleep
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class MainCli actual constructor() {
@@ -21,3 +22,10 @@ actual class MainCli actual constructor() {
         )
     }
 }
+
+actual fun sleepMe(ms:Long){
+    sleep(ms.toUInt())
+}
+
+actual val gitPortalVersion: String
+    get() = co.touchlab.gitportal.gitPortalVersion
