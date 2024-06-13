@@ -68,7 +68,6 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-//                runtimeOnly("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.2")
                 implementation("io.sentry:sentry-kotlin-multiplatform:0.7.1")
                 implementation(libs.kotlinx.cli)
@@ -118,7 +117,6 @@ if (brewbuild == "true") {
         group = "custom"
         description = "Uploads Sentry dSYMsn for intel"
     }
-
     tasks.named("linkReleaseExecutableMacosArm64") { finalizedBy("mvDsymsArm") }
     tasks.named("linkReleaseExecutableMacosX64") { finalizedBy("mvDsymsIntel") }
 }

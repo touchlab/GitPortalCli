@@ -2,14 +2,14 @@
 kotlin = "1.9.23"
 shadow = "8.1.1"
 mavenPublish = "0.27.0"
-kotlinx-cli = "0.3.6"
+kotlinx-cli = "0.4.0"
 kermit = "2.0.3"
 okio = "3.9.0"
 uuid = "0.8.4"
 datetime = "0.6.0"
 
 [libraries]
-kotlinx-cli = { module = "org.jetbrains.kotlinx:kotlinx-cli", version.ref = "kotlinx-cli" }
+kotlinx-cli = { module = "co.touchlab.kotlinx-cli:kotlinx-cli", version.ref = "kotlinx-cli" }
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 uuid = { module = "com.benasher44:uuid", version.ref = "uuid" }
