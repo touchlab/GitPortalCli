@@ -1,16 +1,16 @@
 
 import co.touchlab.gitportal.GitPortal
-import co.touchlab.gitportal.process.ErrorManager.GitPortalError
-import co.touchlab.gitportal.gitPortalError
+import co.touchlab.gitportal.commands.CommandError
+import co.touchlab.gitportal.commands.commandError
 import co.touchlab.gitportal.process.procException
 import co.touchlab.gitportal.process.readText
+import co.touchlab.gitportal.utils.consoleOut
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
 import kotlinx.cli.multiple
 import kotlinx.cli.required
 import okio.FileSystem
 import kotlin.random.Random
-import co.touchlab.gitportal.utils.consoleOut
 
 actual class DeployKeySetup actual constructor(gitPortalArg: Any) : co.touchlab.gitportal.commands.BaseLoggingCommand("deploykey", "Create Deploy Key and secrets") {
     private val gitPortal: GitPortal = gitPortalArg as GitPortal
@@ -91,22 +91,13 @@ actual class DeployKeySetup actual constructor(gitPortalArg: Any) : co.touchlab.
 
         if (result.isFailure) {
             if (result.procException?.combinedOutput?.contains("gh auth login") == true) {
-                gitPortalError(
-                    GitPortalError.GitHubNeedsAuth,
-                    "GitHub Cli is not authorized. Run 'gh auth login' and follow the instructions"
-                )
+                commandError(CommandError.GitHubNeedsAuth, "GitHub Cli is not authorized. Run 'gh auth login' and follow the instructions.")
             }
             if (result.procException?.combinedOutput?.contains("Could not resolve to a Repository with the name") == true) {
-                gitPortalError(
-                    GitPortalError.GitHubRepoNotFound,
-                    "GitHub Cli is not authorized. Run 'gh auth login' and follow the instructions"
-                )
+                commandError(CommandError.GitHubNeedsAuth, "GitHub repo not found.")
             }
             if (result.procException?.combinedOutput?.contains("HTTP 404: Not Found") == true) {
-                gitPortalError(
-                    GitPortalError.GitHubRepoInsufficientAccess,
-                    "GitHub Cli reported 'Not Found'. You may not have sufficient access to this repo."
-                )
+                commandError(CommandError.GitHubRepoInsufficientAccess, "GitHub Cli reported 'Not Found'. You may not have sufficient access to this repo.")
             }
         }
 
