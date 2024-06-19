@@ -4,6 +4,7 @@ import io.sentry.kotlin.multiplatform.Sentry
 import io.sentry.kotlin.multiplatform.SentryLevel
 import io.sentry.kotlin.multiplatform.protocol.Breadcrumb
 
+@Suppress("unused")
 fun mainCli(args: Array<String>) {
     var eventCount = 0
     Sentry.init { options ->
@@ -19,16 +20,12 @@ fun mainCli(args: Array<String>) {
         options.tracesSampleRate = 1.0
     }
 
-    try {
-        MainCli().entry(
-            args = args,
-            sentryEventCount = { eventCount },
-            breadcrumbLogWriter = SentryLogWriter,
-            { arg: Any -> DeployKeySetup(arg) }
-        )
-    } catch (e: Throwable) {
-        Sentry.captureException(e)
-    }
+    MainCli().entry(
+        args = args,
+        sentryEventCount = { eventCount },
+        breadcrumbLogWriter = SentryLogWriter,
+        { arg: Any -> DeployKeySetup(arg) }
+    )
 }
 
 private object SentryLogWriter : LogWriter() {
@@ -48,13 +45,17 @@ private object SentryLogWriter : LogWriter() {
                     "default"
                 } else {
                     "error"
+                },
+                data = throwable?.let { ex ->
+                    mutableMapOf(
+                        Pair(
+                            ex::class.simpleName ?: "(Unknown exception type)",
+                            ex.stackTraceToString()
+                        )
+                    )
                 }
             )
         )
-
-        if (throwable != null) {
-            Sentry.captureException(throwable)
-        }
     }
 }
 
